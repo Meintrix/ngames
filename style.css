@@ -1,0 +1,29 @@
+body {
+  text-align: center;
+  background-color: #000;
+  color: #0f0;
+  font-family: "Vazir", sans-serif;
+  margin-top: 80px;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 40px;
+}
+
+.menu a {
+  display: inline-block;
+  background-color: #0f0;
+  color: #000;
+  text-decoration: none;
+  padding: 15px 25px;
+  border-radius: 12px;
+  font-size: 18px;
+  margin: 10px;
+  transition: 0.2s;
+}
+
+.menu a:hover {
+  background-color: #33ff33;
+  transform: scale(1.05);
+}
