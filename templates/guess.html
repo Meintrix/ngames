@@ -1,9 +1,49 @@
-{% extends 'base.html' %}
-{% block content %}
-<h2>بازی حدس عدد 🎯</h2>
-<p>یه عدد بین ۱ تا ۱۰۰ حدس بزن!</p>
-<input type="number" id="guess" placeholder="عددت رو بنویس">
-<button onclick="sendGuess()">ثبت</button>
-<p id="result"></p>
-<script src="/static/guess.js"></script>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>بازی حدس عدد</title>
+  <style>
+    body {
+      text-align: center;
+      background-color: #000;
+      color: #0f0;
+      font-family: "Vazir", sans-serif;
+      margin-top: 100px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: none;
+      margin: 10px;
+    }
+    input {
+      width: 120px;
+      text-align: center;
+    }
+    button {
+      background-color: #0f0;
+      color: #000;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #33ff33;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 بازی حدس عدد 🎯</h1>
+  <p>یه عدد بین ۱ تا ۱۰۰ حدس بزن!</p>
+
+  <form method="POST">
+    <input type="number" name="guess" placeholder="عدد..." required>
+    <button type="submit">حدس بزن!</button>
+  </form>
+
+  <h2>{{ message }}</h2>
+
+  <br>
+  <a href="/">بازگشت به صفحه اصلی</a>
+</body>
+</html>
