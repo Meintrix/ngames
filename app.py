@@ -1,69 +1,74 @@
-from flask import Flask, render_template, request, jsonify, session
+from flask import Flask, render_template, request, session
 import random
 
 app = Flask(__name__)
-app.secret_key = "supersecretkey"
+app.secret_key = "secret_key_123"
 
-# -------------------------------
 # صفحه اصلی
-# -------------------------------
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# -------------------------------
-# بازی مار
-# -------------------------------
+# --- بازی حدس عدد ---
+@app.route('/guess', methods=['GET', 'POST'])
+def guess():
+    if 'number' not in session:
+        session['number'] = random.randint(1, 100)
+        session['tries'] = 0
+
+    message = ""
+    if request.method == 'POST':
+        try:
+            guess = int(request.form['guess'])
+        except:
+            message = "لطفاً فقط عدد وارد کن 😅"
+            return render_template('guess.html', message=message)
+
+        session['tries'] += 1
+        number = session['number']
+
+        if guess < number:
+            message = "عدد بزرگ‌تره ⬆️"
+        elif guess > number:
+            message = "عدد کوچک‌تره ⬇️"
+        else:
+            message = f"آفرین! 🎉 عدد {number} بود! در {session['tries']} تلاش حدس زدی!"
+            session.pop('number')
+            session.pop('tries')
+
+    return render_template('guess.html', message=message)
+
+
+# --- بازی مار ---
 @app.route('/snake')
 def snake():
     return render_template('snake.html')
 
-# -------------------------------
-# بازی حدس عدد
-# -------------------------------
-@app.route('/guess')
-def guess():
-    session['number'] = random.randint(1, 100)
-    return render_template('guess.html')
 
-@app.route('/check_guess', methods=['POST'])
-def check_guess():
-    user_guess = int(request.form['guess'])
-    number = session.get('number', None)
-
-    if not number:
-        return jsonify({'result': 'بازی شروع نشده!'})
-
-    if user_guess < number:
-        return jsonify({'result': 'بزرگ‌تر حدس بزن 😄'})
-    elif user_guess > number:
-        return jsonify({'result': 'کوچیک‌تر حدس بزن 🤔'})
-    else:
-        return jsonify({'result': 'آفرین درست حدس زدی 🎉'})
-
-# -------------------------------
-# سنگ کاغذ قیچی
-# -------------------------------
-@app.route('/rps')
+# --- بازی سنگ، کاغذ، قیچی ---
+@app.route('/rps', methods=['GET', 'POST'])
 def rps():
-    return render_template('RPS.html')
+    result = ""
+    user_choice = ""
+    computer_choice = ""
 
-@app.route('/play_rps', methods=['POST'])
-def play_rps():
-    choices = ['سنگ', 'کاغذ', 'قیچی']
-    user = request.form['choice']
-    computer = random.choice(choices)
+    choices = ["سنگ", "کاغذ", "قیچی"]
 
-    if user == computer:
-        result = 'مساوی شد 😐'
-    elif (user == 'سنگ' and computer == 'قیچی') or \
-         (user == 'کاغذ' and computer == 'سنگ') or \
-         (user == 'قیچی' and computer == 'کاغذ'):
-        result = 'بردی! 🎉'
-    else:
-        result = 'باختی 😢'
+    if request.method == 'POST':
+        user_choice = request.form["choice"]
+        computer_choice = random.choice(choices)
 
-    return jsonify({'computer': computer, 'result': result})
+        if user_choice == computer_choice:
+            result = "مساوی شد 😐"
+        elif (user_choice == "سنگ" and computer_choice == "قیچی") or \
+             (user_choice == "کاغذ" and computer_choice == "سنگ") or \
+             (user_choice == "قیچی" and computer_choice == "کاغذ"):
+            result = "بردی 😎"
+        else:
+            result = "باختی 😢"
+
+    return render_template('rps.html', result=result, user_choice=user_choice, computer_choice=computer_choice)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
