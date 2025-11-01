@@ -1,42 +1,9 @@
-<!DOCTYPE html>
-<html lang="fa">
-<head>
-  <meta charset="UTF-8">
-  <title>سنگ، کاغذ، قیچی</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <style>
-    button {
-      padding: 12px 25px;
-      margin: 10px;
-      font-size: 18px;
-      border: none;
-      border-radius: 10px;
-      background-color: #0f0;
-      color: #000;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #33ff33;
-    }
-  </style>
-</head>
-<body>
-  <h1>✊📄✂️ بازی سنگ، کاغذ، قیچی</h1>
-  <form method="POST">
-    <button type="submit" name="choice" value="سنگ">✊ سنگ</button>
-    <button type="submit" name="choice" value="کاغذ">📄 کاغذ</button>
-    <button type="submit" name="choice" value="قیچی">✂️ قیچی</button>
-  </form>
-
-  {% if result %}
-  <h2>تو انتخاب کردی: {{ user_choice }}</h2>
-  <h2>کامپیوتر انتخاب کرد: {{ computer_choice }}</h2>
-  <h2>{{ result }}</h2>
-  <br>
-  <a href="/rps">بازی دوباره 🔁</a>
-  {% endif %}
-
-  <br><br>
-  <a href="/">🏠 بازگشت به خانه</a>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+<h2>بازی سنگ، کاغذ، قیچی ✊📄✂️</h2>
+<button onclick="play('سنگ')">سنگ</button>
+<button onclick="play('کاغذ')">کاغذ</button>
+<button onclick="play('قیچی')">قیچی</button>
+<p id="output"></p>
+<script src="/static/rps.js"></script>
+{% endblock %}

@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>GameZone</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <title>🎮 Meintrix Games</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <header class="site-header">
-        <div class="container">
-            <h1><a href="{{ url_for('index') }}">GameZone</a></h1>
-            <p class="tag">مرکز بازی‌های کوچک — سریع، جذاب، خفن</p>
-        </div>
+    <header>
+        <h1>🎮 Meintrix Games</h1>
+        <nav>
+            <a href="/">خانه</a>
+            <a href="/snake">مار</a>
+            <a href="/guess">حدس عدد</a>
+            <a href="/rps">سنگ کاغذ قیچی</a>
+        </nav>
     </header>
-
-    <main class="container">
+    <main>
         {% block content %}{% endblock %}
     </main>
-
-    <footer class="site-footer">
-        <div class="container">@َAmir81838 -ساخته شده توسط امیرمهدی </div>
-    </footer>
 </body>
 </html>

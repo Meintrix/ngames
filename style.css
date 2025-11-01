@@ -1,29 +1,33 @@
 body {
+  background: #f4f6ff;
+  font-family: "Vazirmatn", sans-serif;
   text-align: center;
-  background-color: #000;
-  color: #0f0;
-  font-family: "Vazir", sans-serif;
-  margin-top: 80px;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
 }
 
-h1 {
-  font-size: 28px;
-  margin-bottom: 40px;
+header {
+  background: #4a6cf7;
+  color: white;
+  padding: 15px;
 }
 
-.menu a {
-  display: inline-block;
-  background-color: #0f0;
-  color: #000;
+nav a {
+  color: white;
+  margin: 0 15px;
   text-decoration: none;
-  padding: 15px 25px;
-  border-radius: 12px;
-  font-size: 18px;
-  margin: 10px;
-  transition: 0.2s;
 }
 
-.menu a:hover {
-  background-color: #33ff33;
-  transform: scale(1.05);
+button {
+  background: #4a6cf7;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #374fcc;
 }
