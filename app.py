@@ -65,5 +65,5 @@ def play_rps():
 
     return jsonify({'computer': computer, 'result': result})
 
-if name == "__main__":
-    app.run()
+if __name__ == "__main__":
+    app.run(debug=True)
