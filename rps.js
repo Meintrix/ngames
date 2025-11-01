@@ -1,12 +1,22 @@
 function play(choice) {
   fetch("/play_rps", {
     method: "POST",
-    body: new URLSearchParams({ choice }),
-    headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: "choice=" + encodeURIComponent(choice)
   })
-    .then(res => res.json())
-    .then(data => {
-      document.getElementById("output").innerText =
-        کامپیوتر: ${data.computer} | نتیجه: ${data.result};
-    });
+  .then(function (res) {
+    if (!res.ok) throw new Error("Server error");
+    return res.json();
+  })
+  .then(function (data) {
+    var output = document.getElementById("output");
+    output.innerText = "کامپیوتر: " + data.computer + " | نتیجه: " + data.result;
+  })
+  .catch(function (err) {
+    var output = document.getElementById("output");
+    output.innerText = "خطا در ارتباط با سرور ⚠️";
+    console.error(err);
+  });
 }
