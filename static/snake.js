@@ -1,86 +1,110 @@
-let canvas = document.getElementById("gameCanvas");
-let ctx = canvas.getContext("2d");
-let box = 20;
-let snake = [{ x: 10 * box, y: 10 * box }];
-let food = {
-  x: Math.floor(Math.random() * 20) * box,
-  y: Math.floor(Math.random() * 20) * box
-};
-let score = 0;
-let direction;
-let game;
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const scoreDisplay = document.getElementById("score");
+const recordDisplay = document.getElementById("record");
+const restartBtn = document.getElementById("restartBtn");
 
-document.addEventListener("keydown", directionHandler);
+const box = 20;
+let snake, direction, food, score, record, game;
 
-function directionHandler(e) {
-  if (e.keyCode == 37 && direction != "RIGHT") direction = "LEFT";
-  else if (e.keyCode == 38 && direction != "DOWN") direction = "UP";
-  else if (e.keyCode == 39 && direction != "LEFT") direction = "RIGHT";
-  else if (e.keyCode == 40 && direction != "UP") direction = "DOWN";
+// رکورد از مرورگر (localStorage)
+record = localStorage.getItem("snakeRecord") || 0;
+recordDisplay.textContent = "رکورد: " + record;
+
+function initGame() {
+    snake = [{ x: 10 * box, y: 10 * box }];
+    direction = null;
+    food = {
+        x: Math.floor(Math.random() * 20) * box,
+        y: Math.floor(Math.random() * 20) * box,
+    };
+    score = 0;
+    scoreDisplay.textContent = "امتیاز: ۰";
+    restartBtn.style.display = "none";
+
+    if (game) clearInterval(game);
+    game = setInterval(draw, 100);
 }
 
-function collision(newHead, snake) {
-  for (let i = 0; i < snake.length; i++) {
-    if (newHead.x == snake[i].x && newHead.y == snake[i].y) return true;
-  }
-  return false;
+document.addEventListener("keydown", directionControl);
+
+function directionControl(event) {
+    if (event.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
+    else if (event.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
+    else if (event.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+    else if (event.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
 }
 
 function draw() {
-  ctx.fillStyle = "lightgreen";
-  ctx.fillRect(0, 0, 400, 400);
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  for (let i = 0; i < snake.length; i++) {
-    ctx.fillStyle = i == 0 ? "darkgreen" : "green";
-    ctx.fillRect(snake[i].x, snake[i].y, box, box);
-  }
+    // غذا
+    ctx.fillStyle = "red";
+    ctx.fillRect(food.x, food.y, box, box);
 
-  ctx.fillStyle = "red";
-  ctx.fillRect(food.x, food.y, box, box);
+    // مار
+    for (let i = 0; i < snake.length; i++) {
+        ctx.fillStyle = i === 0 ? "#0f0" : "limegreen";
+        ctx.fillRect(snake[i].x, snake[i].y, box, box);
+    }
 
-  let snakeX = snake[0].x;
-  let snakeY = snake[0].y;
+    let headX = snake[0].x;
+    let headY = snake[0].y;
 
-  if (direction == "LEFT") snakeX -= box;
-  if (direction == "UP") snakeY -= box;
-  if (direction == "RIGHT") snakeX += box;
-  if (direction == "DOWN") snakeY += box;
+    if (direction === "LEFT") headX -= box;
+    if (direction === "UP") headY -= box;
+    if (direction === "RIGHT") headX += box;
+    if (direction === "DOWN") headY += box;
 
-  if (snakeX == food.x && snakeY == food.y) {
-    score++;
-    document.getElementById("score").innerText = "امتیاز: " + score;
-    food = {
-      x: Math.floor(Math.random() * 20) * box,
-      y: Math.floor(Math.random() * 20) * box
-    };
-  } else {
-    snake.pop();
-  }
+    if (headX === food.x && headY === food.y) {
+        score++;
+        scoreDisplay.textContent = "امتیاز: " + score;
 
-  let newHead = { x: snakeX, y: snakeY };
+        // رکورد جدید؟
+        if (score > record) {
+            record = score;
+            localStorage.setItem("snakeRecord", record);
+            recordDisplay.textContent = "رکورد: " + record;
+        }
 
-  if (
-    snakeX < 0 ||
-    snakeY < 0 ||
-    snakeX >= 400 ||
-    snakeY >= 400 ||
-    collision(newHead, snake)
-  ) {
-    clearInterval(game);
-    alert("باختی 😢 امتیازت: " + score);
-    return;
-  }
+        food = {
+            x: Math.floor(Math.random() * 20) * box,
+            y: Math.floor(Math.random() * 20) * box,
+        };
+    } else {
+        snake.pop();
+    }
 
-  snake.unshift(newHead);
+    let newHead = { x: headX, y: headY };
+
+    // باخت
+    if (
+        headX < 0 ||
+        headY < 0 ||
+        headX >= canvas.width ||
+        headY >= canvas.height ||
+        collision(newHead, snake)
+    ) {
+        clearInterval(game);
+        restartBtn.style.display = "block";
+        return;
+    }
+
+    snake.unshift(newHead);
 }
 
-function startGame() {
-  snake = [{ x: 10 * box, y: 10 * box }];
-  direction = undefined;
-  score = 0;
-  document.getElementById("score").innerText = "امتیاز: 0";
-  clearInterval(game);
-  game = setInterval(draw, 100);
+function collision(head, array) {
+    for (let i = 0; i < array.length; i++) {
+        if (head.x === array[i].x && head.y === array[i].y) {
+            return true;
+        }
+    }
+    return false;
 }
 
-startGame();
+function restartGame() {
+    initGame();
+}
+
+initGame();
