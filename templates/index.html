@@ -1,54 +1,62 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MeintrixW</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <style>
-    body {
-      background: radial-gradient(circle at center, #0a0f2c, #000);
-      color: white;
-      font-family: 'Poppins', sans-serif;
-      text-align: center;
-      padding-top: 80px;
-    }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 40px;
-      text-shadow: 0 0 15px #00f2ff;
-    }
-    .menu {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-    a {
-      display: inline-block;
-      padding: 14px 28px;
-      background: linear-gradient(45deg, #0077ff, #00f2ff);
-      color: #fff;
-      text-decoration: none;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
-      transition: all 0.3s ease;
-      font-size: 1.2em;
-    }
-    a:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 25px rgba(0, 242, 255, 0.6);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مرکز بازی‌های وب - مینتریکس</title>
+    <style>
+        body {
+            background: radial-gradient(circle at center, #000000 40%, #0f0f0f);
+            color: lime;
+            text-align: center;
+            font-family: 'Tahoma', sans-serif;
+            direction: rtl;
+        }
+
+        h1 {
+            color: #00ff66;
+            text-shadow: 0 0 20px #00ff66;
+            margin-top: 80px;
+        }
+
+        .game-button {
+            display: block;
+            background: #00ff66;
+            color: black;
+            text-decoration: none;
+            font-size: 20px;
+            margin: 15px auto;
+            padding: 12px 25px;
+            width: 250px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px #00ff66;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .game-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px #00ffaa;
+            background: #00ffaa;
+        }
+
+        footer {
+            margin-top: 60px;
+            color: #00ff99;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-  <h1>🌌 خوش اومدی به MeintrixW!</h1>
-  <div class="menu">
-    <a href="/space">🚀 بازی فضایی</a>
-    <a href="/snake">🐍 بازی مار</a>
-    <a href="/rps">✊ سنگ‌کاغذ‌قیچی</a>
-    <a href="/guess">🎯 حدس عدد</a>
-    <a href="/earth">🌍 اطلاعات زمین</a>
-  </div>
+    <h1>🎮 مرکز بازی‌های وب مینتریکس 🎮</h1>
+
+    <a href="/guess" class="game-button">🎯 حدس عدد</a>
+    <a href="/rps" class="game-button">✊ سنگ، کاغذ، قیچی</a>
+    <a href="/snake" class="game-button">🐍 مار</a>
+    <a href="/space" class="game-button">🚀 شلیک فضایی</a>
+    <a href="/earth" class="game-button">🌍 اطلاعات زمین</a>
+
+    <footer>
+        ساخته شده توسط @Amin1838  
+    </footer>
 </body>
 </html>
