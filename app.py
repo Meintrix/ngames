@@ -33,9 +33,9 @@ def rps():
 
 
 # اطلاعات زمین
-@app.route('/earth')
+@app.route('/earth-map')
 def earth():
-    return render_template('earth.html')
+    return render_template('earth_map.html')
 
 
 # اجرای برنامه
