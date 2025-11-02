@@ -1,92 +1,139 @@
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
 
-let ship = { x: 180, y: 520, w: 40, h: 40 };
+let spaceship = { x: 180, y: 440, w: 40, h: 40 };
 let bullets = [];
 let enemies = [];
 let score = 0;
-let gameOver = false;
+let highScore = localStorage.getItem('highScore') || 0;
 
-// کنترل سفینه با کلیدها
-document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowLeft" && ship.x > 0) ship.x -= 20;
-  if (e.key === "ArrowRight" && ship.x < canvas.width - ship.w) ship.x += 20;
-  if (e.key === " " && !gameOver) {
-    bullets.push({ x: ship.x + 18, y: ship.y });
-  }
+document.getElementById("highscore").innerText = highScore;
+
+// 🎯 حرکت با موس
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  spaceship.x = e.clientX - rect.left - spaceship.w / 2;
+  spaceship.x = Math.max(0, Math.min(spaceship.x, canvas.width - spaceship.w));
 });
 
-function drawShip() {
-  ctx.fillStyle = "#0ff";
-  ctx.fillRect(ship.x, ship.y, ship.w, ship.h);
-}
+// 🔫 شلیک با کلیک
+canvas.addEventListener('click', () => {
+  bullets.push({ x: spaceship.x + spaceship.w / 2 - 2, y: spaceship.y - 10 });
+});
 
-function drawBullets() {
-  ctx.fillStyle = "#ff0";
-  bullets.forEach((b) => {
-    ctx.fillRect(b.x, b.y, 4, 10);
-    b.y -= 10;
+// 👾 ساخت دشمن تصادفی
+function spawnEnemy() {
+  enemies.push({
+    x: Math.random() * (canvas.width - 40),
+    y: -30,
+    size: 35 + Math.random() * 10,
+    speed: 2 + Math.random() * 2
   });
-  bullets = bullets.filter((b) => b.y > 0);
 }
 
+// ✨ رسم سفینه (بدون مربع)
+function drawSpaceship() {
+  ctx.save();
+  ctx.translate(spaceship.x + spaceship.w / 2, spaceship.y + spaceship.h / 2);
+
+  // نور نئون پشت سفینه
+  const grad = ctx.createRadialGradient(0, 20, 5, 0, 20, 25);
+  grad.addColorStop(0, "rgba(0,255,255,0.6)");
+  grad.addColorStop(1, "transparent");
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(0, 20, 20, 0, Math.PI * 2);
+  ctx.fill();
+
+  // بدنه سفینه
+  ctx.fillStyle = "#00FFFF";
+  ctx.beginPath();
+  ctx.moveTo(0, -20);
+  ctx.lineTo(15, 20);
+  ctx.lineTo(-15, 20);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.restore();
+}
+
+// 💥 رسم دشمن‌ها با رنگ و شکل متنوع
 function drawEnemies() {
-  ctx.fillStyle = "#f00";
-  enemies.forEach((e) => {
-    ctx.fillRect(e.x, e.y, e.w, e.h);
-    e.y += 2;
-  });
-  enemies = enemies.filter((e) => e.y < canvas.height);
-}
+  enemies.forEach((en, i) => {
+    en.y += en.speed;
 
-function checkCollisions() {
-  enemies.forEach((e, ei) => {
-    bullets.forEach((b, bi) => {
-      if (
-        b.x < e.x + e.w &&
-        b.x + 4 > e.x &&
-        b.y < e.y + e.h &&
-        b.y + 10 > e.y
-      ) {
-        enemies.splice(ei, 1);
-        bullets.splice(bi, 1);
-        score += 10;
-        document.getElementById("score").innerText = امتیاز: ${score};
+    // شکل بیگانه (دایره با چشم)
+    const gradient = ctx.createRadialGradient(en.x + en.size / 2, en.y + en.size / 2, 5, en.x + en.size / 2, en.y + en.size / 2, en.size);
+    gradient.addColorStop(0, "#ff4d4d");
+    gradient.addColorStop(1, "#990000");
+    ctx.fillStyle = gradient;
+
+    ctx.beginPath();
+    ctx.arc(en.x + en.size / 2, en.y + en.size / 2, en.size / 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // چشم دشمن
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(en.x + en.size / 2, en.y + en.size / 2 - 5, 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    ctx.arc(en.x + en.size / 2, en.y + en.size / 2 - 5, 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // حذف در صورت باخت
+    if (en.y > canvas.height - 40) {
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('highScore', highScore);
       }
-    });
-
-    // برخورد دشمن با سفینه
-    if (
-      e.x < ship.x + ship.w &&
-      e.x + e.w > ship.x &&
-      e.y < ship.y + ship.h &&
-      e.y + e.h > ship.y
-    ) {
-      gameOver = true;
-      document.getElementById("score").innerText = 💀 باختی! امتیاز نهایی: ${score};
+      alert(💥 باختی! امتیاز: ${score}\n🏆 رکورد: ${highScore});
+      document.location.reload();
     }
   });
 }
 
-function addEnemy() {
-  let x = Math.random() * (canvas.width - 40);
-  enemies.push({ x: x, y: 0, w: 40, h: 40 });
+// 🔥 رسم گلوله‌ها
+function drawBullets() {
+  ctx.fillStyle = "yellow";
+  bullets.forEach((b, i) => {
+    b.y -= 7;
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, 3, 0, Math.PI * 2);
+    ctx.fill();
+    if (b.y < 0) bullets.splice(i, 1);
+  });
 }
 
-setInterval(addEnemy, 1000);
-
-function loop() {
+// 🎮 حلقه اصلی بازی
+function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (!gameOver) {
-    drawShip();
-    drawBullets();
-    drawEnemies();
-    checkCollisions();
-    requestAnimationFrame(loop);
-  } else {
-    ctx.fillStyle = "#0ff";
-    ctx.font = "28px Arial";
-    ctx.fillText("برای شروع مجدد رفرش کن 🔄", 40, 300);
-  }
+
+  drawSpaceship();
+  drawBullets();
+  drawEnemies();
+
+  // برخورد گلوله با دشمن
+  enemies.forEach((en, i) => {
+    bullets.forEach((b, j) => {
+      if (
+        b.x > en.x &&
+        b.x < en.x + en.size &&
+        b.y > en.y &&
+        b.y < en.y + en.size
+      ) {
+        enemies.splice(i, 1);
+        bullets.splice(j, 1);
+        score += 10;
+        document.getElementById("score").innerText = score;
+      }
+    });
+  });
+
+  requestAnimationFrame(gameLoop);
 }
-loop();
+
+setInterval(spawnEnemy, 1000);
+gameLoop();
