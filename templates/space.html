@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>🚀 شلیک فضایی</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    canvas {
+      background: radial-gradient(circle, #000010, #000000);
+      display: block;
+      margin: 40px auto;
+      border: 2px solid #00ffff;
+      border-radius: 10px;
+    }
+    h1 {
+      color: #00ffff;
+      font-family: "Vazirmatn", sans-serif;
+      text-align: center;
+    }
+    #score {
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>🚀 بازی شلیک فضایی</h1>
+  <p id="score">امتیاز: 0</p>
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+  <script src="{{ url_for('static', filename='space.js') }}"></script>
+  <a href="/" style="display:block;text-align:center;color:#0ff;">🏠 بازگشت به صفحه اصلی</a>
+</body>
+</html>

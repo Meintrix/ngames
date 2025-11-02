@@ -4,12 +4,13 @@ import random
 app = Flask(__name__)
 app.secret_key = "secret_key_123"
 
-# صفحه اصلی
+# ---------------- صفحه اصلی ----------------
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# --- بازی حدس عدد ---
+
+# ---------------- بازی حدس عدد ----------------
 @app.route('/guess', methods=['GET', 'POST'])
 def guess():
     if 'number' not in session:
@@ -19,7 +20,7 @@ def guess():
     message = ""
     if request.method == 'POST':
         try:
-            guess = int(request.form['guess'])
+            user_guess = int(request.form['guess'])
         except:
             message = "لطفاً فقط عدد وارد کن 😅"
             return render_template('guess.html', message=message)
@@ -27,9 +28,9 @@ def guess():
         session['tries'] += 1
         number = session['number']
 
-        if guess < number:
+        if user_guess < number:
             message = "عدد بزرگ‌تره ⬆️"
-        elif guess > number:
+        elif user_guess > number:
             message = "عدد کوچک‌تره ⬇️"
         else:
             message = f"آفرین! 🎉 عدد {number} بود! در {session['tries']} تلاش حدس زدی!"
@@ -39,19 +40,18 @@ def guess():
     return render_template('guess.html', message=message)
 
 
-# --- بازی مار ---
+# ---------------- بازی مار ----------------
 @app.route('/snake')
 def snake():
     return render_template('snake.html')
 
 
-# --- بازی سنگ، کاغذ، قیچی ---
+# ---------------- بازی سنگ، کاغذ، قیچی ----------------
 @app.route('/rps', methods=['GET', 'POST'])
 def rps():
     result = ""
     user_choice = ""
     computer_choice = ""
-
     choices = ["سنگ", "کاغذ", "قیچی"]
 
     if request.method == 'POST':
@@ -70,5 +70,12 @@ def rps():
     return render_template('rps.html', result=result, user_choice=user_choice, computer_choice=computer_choice)
 
 
-if __name__ == "__main__":
+# ---------------- بازی شلیک فضایی ----------------
+@app.route('/space')
+def space():
+    return render_template('space.html')
+
+
+# ---------------- اجرا ----------------
+if name == "__main__":
     app.run(debug=True)
