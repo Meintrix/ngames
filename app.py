@@ -2,15 +2,18 @@ from flask import Flask, render_template, request, session
 import random
 
 app = Flask(__name__)
-app.secret_key = "secret_key_123"
+app.secret_key = "meintrix_secret_key_2025"
 
-# ---------------- صفحه اصلی ----------------
+# -------------------------------
+# صفحه اصلی
+# -------------------------------
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
-# ---------------- بازی حدس عدد ----------------
+# -------------------------------
+# بازی حدس عدد
+# -------------------------------
 @app.route('/guess', methods=['GET', 'POST'])
 def guess():
     if 'number' not in session:
@@ -20,7 +23,7 @@ def guess():
     message = ""
     if request.method == 'POST':
         try:
-            user_guess = int(request.form['guess'])
+            guess = int(request.form['guess'])
         except:
             message = "لطفاً فقط عدد وارد کن 😅"
             return render_template('guess.html', message=message)
@@ -28,25 +31,27 @@ def guess():
         session['tries'] += 1
         number = session['number']
 
-        if user_guess < number:
+        if guess < number:
             message = "عدد بزرگ‌تره ⬆️"
-        elif user_guess > number:
+        elif guess > number:
             message = "عدد کوچک‌تره ⬇️"
         else:
-            message = f"آفرین! 🎉 عدد {number} بود! در {session['tries']} تلاش حدس زدی!"
+            message = f"آفرین 🎉 عدد {number} بود! در {session['tries']} تلاش حدس زدی!"
             session.pop('number')
             session.pop('tries')
 
     return render_template('guess.html', message=message)
 
-
-# ---------------- بازی مار ----------------
+# -------------------------------
+# بازی مار
+# -------------------------------
 @app.route('/snake')
 def snake():
     return render_template('snake.html')
 
-
-# ---------------- بازی سنگ، کاغذ، قیچی ----------------
+# -------------------------------
+# بازی سنگ، کاغذ، قیچی
+# -------------------------------
 @app.route('/rps', methods=['GET', 'POST'])
 def rps():
     result = ""
@@ -69,13 +74,15 @@ def rps():
 
     return render_template('rps.html', result=result, user_choice=user_choice, computer_choice=computer_choice)
 
-
-# ---------------- بازی شلیک فضایی ----------------
+# -------------------------------
+# بازی شلیک فضایی
+# -------------------------------
 @app.route('/space')
 def space():
     return render_template('space.html')
 
-
-# ---------------- اجرا ----------------
+# -------------------------------
+# اجرای برنامه (برای لوکال یا Vercel)
+# -------------------------------
 if __name__ == "__main__":
     app.run(debug=True)

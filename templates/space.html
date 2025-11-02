@@ -6,30 +6,87 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <style>
     canvas {
-      background: radial-gradient(circle, #000010, #000000);
+      background: black;
       display: block;
-      margin: 40px auto;
-      border: 2px solid #00ffff;
-      border-radius: 10px;
-    }
-    h1 {
-      color: #00ffff;
-      font-family: "Vazirmatn", sans-serif;
-      text-align: center;
-    }
-    #score {
-      color: #fff;
-      font-size: 20px;
-      text-align: center;
+      margin: 30px auto;
+      border: 2px solid #0ff;
     }
   </style>
 </head>
 <body>
   <h1>🚀 بازی شلیک فضایی</h1>
-  <p id="score">امتیاز: 0</p>
-  <canvas id="gameCanvas" width="400" height="600"></canvas>
+  <p>با کلیدهای ◀️ ▶️ حرکت کن و با Space شلیک کن!</p>
+  <canvas id="gameCanvas" width="400" height="500"></canvas>
 
-  <script src="{{ url_for('static', filename='space.js') }}"></script>
-  <a href="/" style="display:block;text-align:center;color:#0ff;">🏠 بازگشت به صفحه اصلی</a>
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    let spaceship = { x: 180, y: 450, w: 40, h: 40 };
+    let bullets = [];
+    let enemies = [];
+    let score = 0;
+
+    // حرکت سفینه
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' && spaceship.x > 0) spaceship.x -= 20;
+      if (e.key === 'ArrowRight' && spaceship.x < 360) spaceship.x += 20;
+      if (e.key === ' ') bullets.push({ x: spaceship.x + 18, y: spaceship.y });
+    });
+
+    // تولید دشمن
+    function spawnEnemy() {
+      enemies.push({ x: Math.random() * 360, y: 0 });
+    }
+
+    // حلقه بازی
+    function gameLoop() {
+      ctx.clearRect(0, 0, 400, 500);
+
+      // سفینه
+      ctx.fillStyle = 'cyan';
+      ctx.fillRect(spaceship.x, spaceship.y, spaceship.w, spaceship.h);
+
+      // گلوله‌ها
+      ctx.fillStyle = 'yellow';
+      bullets.forEach((b, i) => {
+        b.y -= 8;
+        ctx.fillRect(b.x, b.y, 5, 10);
+        if (b.y < 0) bullets.splice(i, 1);
+      });
+
+      // دشمن‌ها
+      ctx.fillStyle = 'red';
+      enemies.forEach((en, i) => {
+        en.y += 3;
+        ctx.fillRect(en.x, en.y, 30, 30);
+
+        // باخت
+        if (en.y > 480) {
+          alert("باختی 😢 امتیاز: " + score);
+          document.location.reload();
+        }
+
+        // برخورد گلوله با دشمن
+        bullets.forEach((b, j) => {
+          if (b.x < en.x + 30 && b.x + 5 > en.x && b.y < en.y + 30 && b.y + 10 > en.y) {
+            enemies.splice(i, 1);
+            bullets.splice(j, 1);
+            score += 10;
+          }
+        });
+      });
+
+      // امتیاز
+      ctx.fillStyle = 'white';
+      ctx.font = '16px sans-serif';
+      ctx.fillText("امتیاز: " + score, 10, 20);
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    setInterval(spawnEnemy, 1000);
+    gameLoop();
+  </script>
 </body>
 </html>
