@@ -1,44 +1,72 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>🎮 مرکز بازی‌ها</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>Meintrix Games</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at 30% 20%, #03040a, #000);
+      font-family: "Vazir", sans-serif;
+      color: #00e5ff;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-top: 40px;
+      text-shadow: 0 0 20px #00ffff66;
+    }
+
+    .menu {
+      margin-top: 60px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .btn {
+      background: linear-gradient(90deg, #00ffd1, #008cff);
+      color: #001;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      padding: 15px 25px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px #00e5ff44;
+      transition: 0.25s;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 25px #00ffffaa;
+    }
+
+    footer {
+      margin-top: 80px;
+      color: #66faffaa;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>🎮 مرکز بازی‌های وب نیمه کاره 🎮</h1>
+  <h1>🎮 خوش آمدی به دنیای Meintrix!</h1>
+  <p>یکی از بخش‌ها رو انتخاب کن 👇</p>
+
   <div class="menu">
-    <a href="/guess">🎯 حدس عدد</a>
-    <a href="/rps">✊📄✂️ سنگ، کاغذ، قیچی</a>
-    <a href="/snake">🐍 مار</a>
-    <a href="/space" class="btn">شلیک فضایی</a>
+    <a class="btn" href="/guess">🔢 بازی حدس عدد</a>
+    <a class="btn" href="/snake">🐍 بازی مار</a>
+    <a class="btn" href="/rps">✊ بازی سنگ، کاغذ، قیچی</a>
+    <a class="btn" href="/space">🚀 بازی فضایی</a>
+    <a class="btn" href="/earth">🌍 اطلاعات زمین</a>
   </div>
-</body>
-<!DOCTYPE html>
-<html lang="fa">
-<head>
-  <meta charset="UTF-8">
-  <title>سایت من</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <!-- محتوای سایتت اینجا -->
-  
-  <!-- فوتر آی‌دی -->
-  <footer style="
-    text-align:center;
-    padding:12px 8px;
-    font-size:14px;
-    color:#0f0;
-    background-color:#000000;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    box-shadow: 0 -2px 6px rgba(0,0,0,0.15);
-    z-index: 9999;
-  ">
-    ساخته شده توسط: <strong>@Amir81838</strong>
-  </footer>
+
+  <footer>© 2025 Meintrix — ساخته شده با Flask و عشق 💙</footer>
 </body>
 </html>
