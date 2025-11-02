@@ -3,60 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مرکز بازی‌های وب - مینتریکس</title>
+    <title>🎮 مرکز بازی‌ها</title>
     <style>
         body {
-            background: radial-gradient(circle at center, #000000 40%, #0f0f0f);
-            color: lime;
+            font-family: "Tahoma", sans-serif;
+            background: radial-gradient(circle at top, #001f3f, #000);
+            color: #00ffcc;
             text-align: center;
-            font-family: 'Tahoma', sans-serif;
-            direction: rtl;
+            margin: 0;
+            padding: 0;
         }
 
         h1 {
-            color: #00ff66;
-            text-shadow: 0 0 20px #00ff66;
-            margin-top: 80px;
+            margin-top: 60px;
+            font-size: 38px;
+            text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc;
         }
 
-        .game-button {
-            display: block;
-            background: #00ff66;
-            color: black;
-            text-decoration: none;
-            font-size: 20px;
-            margin: 15px auto;
-            padding: 12px 25px;
+        .menu {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 60px;
+            gap: 20px;
+        }
+
+        a {
+            display: inline-block;
             width: 250px;
+            padding: 14px;
+            font-size: 20px;
+            color: black;
+            background: #00ffcc;
             border-radius: 12px;
-            box-shadow: 0 0 15px #00ff66;
-            transition: all 0.2s ease-in-out;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 0 15px #00ffcc;
+            transition: 0.3s;
         }
 
-        .game-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 25px #00ffaa;
+        a:hover {
             background: #00ffaa;
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #00ffaa;
         }
 
         footer {
-            margin-top: 60px;
-            color: #00ff99;
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            color: #00ffcc;
             font-size: 14px;
         }
     </style>
 </head>
 <body>
-    <h1>🎮 مرکز بازی‌های وب مینتریکس 🎮</h1>
 
-    <a href="/guess" class="game-button">🎯 حدس عدد</a>
-    <a href="/rps" class="game-button">✊ سنگ، کاغذ، قیچی</a>
-    <a href="/snake" class="game-button">🐍 مار</a>
-    <a href="/space" class="game-button">🚀 شلیک فضایی</a>
-    <a href="/earth" class="game-button">🌍 اطلاعات زمین</a>
+    <h1>🎮 مرکز بازی‌های من 🎮</h1>
 
-    <footer>
-        ساخته شده توسط @Amin1838  
-    </footer>
+    <div class="menu">
+        <a href="/guess">🔢 بازی حدس عدد</a>
+        <a href="/snake">🐍 بازی مار</a>
+        <a href="/rps">✊ سنگ، کاغذ، قیچی</a>
+        <a href="/space">🚀 شلیک فضایی</a>
+        <a href="/earth-map">🌍 اطلاعات زمین</a>
+    </div>
+
+    <footer>طراحی شده توسط @َAmir81838</footer>
 </body>
 </html>
