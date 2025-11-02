@@ -1,72 +1,54 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>Meintrix Games</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MeintrixW</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at 30% 20%, #03040a, #000);
-      font-family: "Vazir", sans-serif;
-      color: #00e5ff;
+      background: radial-gradient(circle at center, #0a0f2c, #000);
+      color: white;
+      font-family: 'Poppins', sans-serif;
       text-align: center;
-      overflow-x: hidden;
+      padding-top: 80px;
     }
-
     h1 {
-      font-size: 2.5rem;
-      margin-top: 40px;
-      text-shadow: 0 0 20px #00ffff66;
+      font-size: 2.5em;
+      margin-bottom: 40px;
+      text-shadow: 0 0 15px #00f2ff;
     }
-
     .menu {
-      margin-top: 60px;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
     }
-
-    .btn {
-      background: linear-gradient(90deg, #00ffd1, #008cff);
-      color: #001;
-      font-weight: 700;
-      border: none;
-      border-radius: 12px;
-      padding: 15px 25px;
-      font-size: 1.2rem;
-      cursor: pointer;
-      box-shadow: 0 0 15px #00e5ff44;
-      transition: 0.25s;
+    a {
+      display: inline-block;
+      padding: 14px 28px;
+      background: linear-gradient(45deg, #0077ff, #00f2ff);
+      color: #fff;
       text-decoration: none;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+      transition: all 0.3s ease;
+      font-size: 1.2em;
     }
-
-    .btn:hover {
-      transform: scale(1.08);
-      box-shadow: 0 0 25px #00ffffaa;
-    }
-
-    footer {
-      margin-top: 80px;
-      color: #66faffaa;
-      font-size: 0.9rem;
+    a:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px rgba(0, 242, 255, 0.6);
     }
   </style>
 </head>
 <body>
-  <h1>🎮 خوش آمدی به دنیای Meintrix!</h1>
-  <p>یکی از بخش‌ها رو انتخاب کن 👇</p>
-
+  <h1>🌌 خوش اومدی به MeintrixW!</h1>
   <div class="menu">
-    <a class="btn" href="/guess">🔢 بازی حدس عدد</a>
-    <a class="btn" href="/snake">🐍 بازی مار</a>
-    <a class="btn" href="/rps">✊ بازی سنگ، کاغذ، قیچی</a>
-    <a class="btn" href="/space">🚀 بازی فضایی</a>
-    <a class="btn" href="/earth">🌍 اطلاعات زمین</a>
+    <a href="/space">🚀 بازی فضایی</a>
+    <a href="/snake">🐍 بازی مار</a>
+    <a href="/rps">✊ سنگ‌کاغذ‌قیچی</a>
+    <a href="/guess">🎯 حدس عدد</a>
+    <a href="/earth">🌍 اطلاعات زمین</a>
   </div>
-
-  <footer>© 2025 Meintrix — ساخته شده با Flask و عشق 💙</footer>
 </body>
 </html>
