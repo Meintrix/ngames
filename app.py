@@ -11,6 +11,9 @@ app.secret_key = "meintrix_secret_key_2025"
 def index():
     return render_template('index.html')
 
+@app.route('/earth')
+def earth():
+    return render_template('index.html')
 # -------------------------------
 # بازی حدس عدد
 # -------------------------------

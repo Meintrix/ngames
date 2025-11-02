@@ -1,0 +1,31 @@
+<!-- templates/earth.html -->
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <title>اطلاعات زمین — Meintrix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- D3.js -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/earth_map.css') }}">
+</head>
+<body>
+  <div id="container">
+    <svg id="map"></svg>
+
+    <aside id="infoPanel">
+      <h2>اطلاعات کشور</h2>
+      <div id="intro">ماوس را روی نام کشور ببرید یا روی آن کلیک کنید.</div>
+      <div id="countryName" class="big"></div>
+      <div id="countryInfo"></div>
+      <div id="flagWrap"></div>
+      <div id="extra"></div>
+      <a class="home" href="/">🏠 بازگشت به خانه</a>
+    </aside>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/earth_map.js') }}"></script>
+</body>
+</html>
