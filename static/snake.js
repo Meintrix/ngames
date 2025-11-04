@@ -1,76 +1,78 @@
-const canvas = document.getElementById("snakeCanvas");
-const ctx = canvas.getContext("2d");
-const box = 20;
-let snake = [{ x: 10 * box, y: 10 * box }];
-let food = {
-  x: Math.floor(Math.random() * 20) * box,
-  y: Math.floor(Math.random() * 20) * box
-};
-let d;
-let score = 0;
+// static/snake.js
+(() => {
+  const canvas = document.getElementById("snakeCanvas");
+  const ctx = canvas.getContext("2d");
+  const box = 20;
+  let snake = [{ x: 9*box, y: 9*box }];
+  let dir = null;
+  let food = { x: Math.floor(Math.random()*20)*box, y: Math.floor(Math.random()*20)*box };
+  let score = 0;
 
-document.addEventListener("keydown", direction);
+  document.addEventListener("keydown", e => {
+    if (e.keyCode == 37 && dir != 'RIGHT') dir = 'LEFT';
+    else if (e.keyCode == 38 && dir != 'DOWN') dir = 'UP';
+    else if (e.keyCode == 39 && dir != 'LEFT') dir = 'RIGHT';
+    else if (e.keyCode == 40 && dir != 'UP') dir = 'DOWN';
+  });
 
-function direction(event) {
-  if (event.keyCode == 37 && d != "RIGHT") d = "LEFT";
-  else if (event.keyCode == 38 && d != "DOWN") d = "UP";
-  else if (event.keyCode == 39 && d != "LEFT") d = "RIGHT";
-  else if (event.keyCode == 40 && d != "UP") d = "DOWN";
-}
+  function draw(){
+    ctx.fillStyle = "#001";
+    ctx.fillRect(0,0,400,400);
 
-function draw() {
-  ctx.fillStyle = "#000";
-  ctx.fillRect(0, 0, 400, 400);
+    for (let i=0;i<snake.length;i++){
+      ctx.fillStyle = i==0 ? "#00e0ff" : "#fff";
+      ctx.fillRect(snake[i].x, snake[i].y, box, box);
+    }
 
-  for (let i = 0; i < snake.length; i++) {
-    ctx.fillStyle = i == 0 ? "#00ffcc" : "white";
-    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+    ctx.fillStyle = "#ff6666";
+    ctx.fillRect(food.x, food.y, box, box);
+
+    let headX = snake[0].x;
+    let headY = snake[0].y;
+    if (dir == "LEFT") headX -= box;
+    if (dir == "UP") headY -= box;
+    if (dir == "RIGHT") headX += box;
+    if (dir == "DOWN") headY += box;
+
+    // eat food
+    if (headX == food.x && headY == food.y){
+      score++;
+      // send score to server
+      fetch('/update_score', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/x-www-form-urlencoded' },
+        body: score=${encodeURIComponent(score)}
+      }).catch(()=>{});
+      food = { x: Math.floor(Math.random()*20)*box, y: Math.floor(Math.random()*20)*box };
+    } else {
+      snake.pop();
+    }
+
+    // new head
+    const newHead = { x: headX, y: headY };
+
+    // collision
+    for (let i=0;i<snake.length;i++){
+      if (snake[i].x == newHead.x && snake[i].y == newHead.y){
+        clearInterval(game);
+        alert("باختی! امتیاز: " + score);
+        window.location.href = '/menu';
+        return;
+      }
+    }
+
+    if (headX < 0 || headY < 0 || headX >= 400 || headY >= 400){
+      clearInterval(game);
+      alert("باختی! امتیاز: " + score);
+      window.location.href = '/menu';
+      return;
+    }
+
+    snake.unshift(newHead);
+    // draw score on page
+    const el = document.getElementById('snakeScore');
+    if (el) el.innerText = score;
   }
 
-  ctx.fillStyle = "red";
-  ctx.fillRect(food.x, food.y, box, box);
-
-  let snakeX = snake[0].x;
-  let snakeY = snake[0].y;
-
-  if (d == "LEFT") snakeX -= box;
-  if (d == "UP") snakeY -= box;
-  if (d == "RIGHT") snakeX += box;
-  if (d == "DOWN") snakeY += box;
-
-  if (snakeX == food.x && snakeY == food.y) {
-    score++;
-    localStorage.setItem('playerScore', Number(localStorage.getItem('playerScore') || 0) + 1);
-    food = {
-      x: Math.floor(Math.random() * 20) * box,
-      y: Math.floor(Math.random() * 20) * box
-    };
-  } else {
-    snake.pop();
-  }
-
-  let newHead = { x: snakeX, y: snakeY };
-
-  if (
-    snakeX < 0 ||
-    snakeY < 0 ||
-    snakeX >= 400 ||
-    snakeY >= 400 ||
-    collision(newHead, snake)
-  ) {
-    clearInterval(game);
-    alert("🐍 باختی! امتیاز: " + score);
-    window.location.href = "/";
-  }
-
-  snake.unshift(newHead);
-}
-
-function collision(head, array) {
-  for (let i = 0; i < array.length; i++) {
-    if (head.x == array[i].x && head.y == array[i].y) return true;
-  }
-  return false;
-}
-
-let game = setInterval(draw, 100);
+  let game = setInterval(draw, 120);
+})();

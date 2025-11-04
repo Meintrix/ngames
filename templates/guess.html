@@ -1,21 +1,27 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>بازی حدس عدد 🎯</title>
+  <meta charset="utf-8">
+  <title>حدس عدد — NGames</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1>بازی حدس عدد 🎯</h1>
-  <p>یه عدد بین ۱ تا ۱۰۰ انتخاب شده — حدس بزن کدومه!</p>
+  <div class="game-wrap">
+    <h2>🎯 بازی حدس عدد</h2>
+    <p>یک عدد بین ۱ تا ۱۰۰ حدس بزن</p>
 
-  <form method="POST">
-    <input type="number" name="guess" placeholder="عددت رو وارد کن">
-    <button type="submit">ارسال</button>
-  </form>
+    <form method="post" class="form-inline">
+      <input name="guess" type="number" placeholder="عدد" required>
+      <button type="submit">ارسال</button>
+    </form>
 
-  <h3>{{ message }}</h3>
+    {% if message %}
+      <div class="message">{{ message }}</div>
+    {% endif %}
 
-  <button onclick="window.location.href='/'">🏠 بازگشت به خانه</button>
+    <div class="controls">
+      <a class="btn" href="{{ url_for('menu') }}">بازگشت به منو</a>
+    </div>
+  </div>
 </body>
 </html>

@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>سنگ، کاغذ، قیچی ✊📄✂️</title>
+  <meta charset="utf-8">
+  <title>سنگ، کاغذ، قیچی — NGames</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1>سنگ، کاغذ، قیچی ✊📄✂️</h1>
+  <div class="game-wrap">
+    <h2>✊ سنگ، کاغذ، قیچی</h2>
 
-  <form method="POST">
-    <button name="choice" value="سنگ">✊ سنگ</button>
-    <button name="choice" value="کاغذ">📄 کاغذ</button>
-    <button name="choice" value="قیچی">✂️ قیچی</button>
-  </form>
+    <form method="post" class="rps-form">
+      <button name="choice" value="سنگ" type="submit">✊ سنگ</button>
+      <button name="choice" value="کاغذ" type="submit">📄 کاغذ</button>
+      <button name="choice" value="قیچی" type="submit">✂️ قیچی</button>
+    </form>
 
-  {% if result %}
-  <h3>نتیجه: {{ result }}</h3>
-  <p>شما انتخاب کردی: {{ user_choice }}</p>
-  <p>کامپیوتر انتخاب کرد: {{ computer_choice }}</p>
-  {% endif %}
+    {% if result %}
+      <div class="message">نتیجه: {{ result }} — شما: {{ user_choice }} — کامپیوتر: {{ computer_choice }}</div>
+    {% endif %}
 
-  <button onclick="window.location.href='/'">🏠 بازگشت به خانه</button>
+    <div class="controls">
+      <a class="btn" href="{{ url_for('menu') }}">بازگشت به منو</a>
+    </div>
+  </div>
 </body>
 </html>

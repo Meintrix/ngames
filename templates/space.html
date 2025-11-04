@@ -1,19 +1,26 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<title>بازی شلیک فضایی</title>
-<link rel="stylesheet" href="/static/style.css">
+  <meta charset="utf-8">
+  <title>شلیک فضایی — NGames</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div class="game-container">
-  <h2>🚀 بازی شلیک فضایی</h2>
-  <p>رکورد شما: <span id="score">0</span></p>
-  <canvas id="spaceCanvas"></canvas><br>
-  <button id="startBtn">شروع دوباره</button>
-  <button onclick="window.location.href='/menu'">بازگشت به خانه 🏠</button>
-</div>
+  <div class="game-wrap">
+    <h2>🚀 شلیک فضایی</h2>
+    <div class="game-info">امتیاز فعلی: <span id="scoreDisplay">0</span></div>
 
-<script src="/static/space.js"></script>
+    <div class="canvas-wrap">
+      <canvas id="spaceCanvas" width="600" height="500"></canvas>
+    </div>
+
+    <div class="controls">
+      <button id="startBtn">شروع بازی</button>
+      <button id="restartBtn" style="display:none;">شروع دوباره</button>
+      <a class="btn" href="{{ url_for('menu') }}">بازگشت به منو</a>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='space.js') }}"></script>
 </body>
 </html>

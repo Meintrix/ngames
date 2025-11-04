@@ -1,33 +1,34 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>اطلاعات زمین 🌍</title>
+  <meta charset="utf-8">
+  <title>نقشه — NGames</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 <body>
-  <h1>🌍 نقشه تعاملی زمین</h1>
-  <div id="map" style="width: 100%; height: 90vh;"></div>
+  <div class="game-wrap">
+    <h2>🌍 اطلاعات زمین</h2>
+    <div id="map" style="height:70vh;"></div>
+    <div class="controls">
+      <a class="btn" href="{{ url_for('menu') }}">بازگشت به منو</a>
+    </div>
+  </div>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const map = L.map('map').setView([20, 0], 2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
 
-    const countries = [
+    const data = [
       { name: "ایران", capital: "تهران", lat: 35.7, lon: 51.4 },
-      { name: "فرانسه", capital: "پاریس", lat: 48.8, lon: 2.3 },
-      { name: "ژاپن", capital: "توکیو", lat: 35.7, lon: 139.7 },
-      { name: "آمریکا", capital: "واشنگتن", lat: 38.9, lon: -77.0 },
+      { name: "فرانسه", capital: "پاریس", lat: 48.85, lon: 2.35 },
+      { name: "ژاپن", capital: "توکیو", lat: 35.68, lon: 139.76 },
+      { name: "آمریکا", capital: "واشنگتن", lat: 38.9, lon: -77.03 }
     ];
 
-    countries.forEach(c => {
-      L.marker([c.lat, c.lon]).addTo(map)
-        .bindPopup(<b>${c.name}</b><br>پایتخت: ${c.capital})
-        .openPopup;
+    data.forEach(c => {
+      L.marker([c.lat, c.lon]).addTo(map).bindPopup(<b>${c.name}</b><br>پایتخت: ${c.capital});
     });
   </script>
 </body>
