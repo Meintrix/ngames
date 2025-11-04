@@ -2,11 +2,47 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <title>بازی فضایی 🚀</title>
+  <title>🚀 شلیک فضایی</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background: radial-gradient(circle at center, #000022, #000010);
+      color: white;
+      text-align: center;
+      font-family: "Vazirmatn", sans-serif;
+    }
+    canvas {
+      border-radius: 15px;
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.8);
+    }
+    button {
+      background-color: #00ffff;
+      color: black;
+      font-weight: bold;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    a.home {
+      display: inline-block;
+      margin-top: 20px;
+      color: #0ff;
+      text-decoration: none;
+      font-size: 18px;
+    }
+  </style>
 </head>
 <body>
-  <canvas id="gameCanvas"></canvas>
+  <h1>🚀 بازی شلیک فضایی</h1>
+  <div>
+    <button id="startBtn">شروع بازی</button>
+    <button id="restartBtn" style="display:none;">شروع دوباره</button>
+  </div>
+  <canvas id="gameCanvas" width="600" height="600"></canvas>
+  <a class="home" href="/">🏠 بازگشت به خانه</a>
   <script src="{{ url_for('static', filename='space.js') }}"></script>
 </body>
 </html>
