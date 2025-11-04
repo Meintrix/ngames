@@ -2,133 +2,32 @@
 <html lang="fa">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🌍 اطلاعات زمین</title>
-  <style>
-    body {
-      background: radial-gradient(circle at top, #000a12, #000);
-      color: #00ffc3;
-      font-family: "Tahoma", sans-serif;
-      text-align: center;
-      overflow: hidden;
-      margin: 0;
-      padding: 0;
-    }
-
-    h1 {
-      margin: 20px 0;
-      text-shadow: 0 0 20px #00ffc3, 0 0 40px #00ffc3;
-      font-size: 32px;
-    }
-
-    #map-container {
-      position: relative;
-      width: 90%;
-      max-width: 900px;
-      margin: 30px auto;
-    }
-
-    svg {
-      width: 100%;
-      height: auto;
-    }
-
-    path {
-      fill: #024b30;
-      stroke: #00ffc3;
-      stroke-width: 0.5;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-
-    path:hover {
-      fill: #00ffc3;
-      transform: scale(1.02);
-    }
-
-    #info-box {
-      position: fixed;
-      bottom: 30px;
-      left: 30px;
-      background: rgba(0, 0, 0, 0.8);
-      border: 2px solid #00ffc3;
-      border-radius: 12px;
-      padding: 15px 20px;
-      font-size: 16px;
-      color: #00ffc3;
-      text-align: left;
-      display: none;
-      box-shadow: 0 0 25px #00ffc3;
-    }
-
-    #back-button {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #00ffc3;
-      color: black;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 20px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 0 20px #00ffc3;
-      transition: 0.3s;
-    }
-
-    #back-button:hover {
-      background: #00ffea;
-      box-shadow: 0 0 40px #00ffc3;
-    }
-  </style>
+  <title>اطلاعات زمین 🌍</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
-  <h1>🌍 اطلاعات زمین</h1>
-
-  <div id="map-container">
-    <!-- نقشه SVG ساده (برای مثال چند کشور) -->
-    <svg viewBox="0 0 800 400">
-      <path id="IR" d="M500,150 L520,160 L530,170 L520,180 L500,170 Z" title="ایران"></path>
-      <path id="US" d="M100,120 L180,120 L180,160 L100,160 Z" title="آمریکا"></path>
-      <path id="CN" d="M600,130 L660,140 L650,180 L590,170 Z" title="چین"></path>
-      <path id="RU" d="M550,80 L700,80 L700,130 L550,130 Z" title="روسیه"></path>
-    </svg>
-  </div>
-
-  <div id="info-box"></div>
-
-  <button id="back-button" onclick="window.location.href='/'">🏠 بازگشت به خانه</button>
+  <h1>🌍 نقشه تعاملی زمین</h1>
+  <div id="map" style="width: 100%; height: 90vh;"></div>
 
   <script>
-    const info = {
-      "IR": { name: "ایران", capital: "تهران", population: "۸۵ میلیون", continent: "آسیا" },
-      "US": { name: "ایالات متحده", capital: "واشنگتن دی‌سی", population: "۳۳۱ میلیون", continent: "آمریکای شمالی" },
-      "CN": { name: "چین", capital: "پکن", population: "۱.۴ میلیارد", continent: "آسیا" },
-      "RU": { name: "روسیه", capital: "مسکو", population: "۱۴۴ میلیون", continent: "اروپا و آسیا" }
-    };
+    const map = L.map('map').setView([20, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-    const paths = document.querySelectorAll("path");
-    const infoBox = document.getElementById("info-box");
+    const countries = [
+      { name: "ایران", capital: "تهران", lat: 35.7, lon: 51.4 },
+      { name: "فرانسه", capital: "پاریس", lat: 48.8, lon: 2.3 },
+      { name: "ژاپن", capital: "توکیو", lat: 35.7, lon: 139.7 },
+      { name: "آمریکا", capital: "واشنگتن", lat: 38.9, lon: -77.0 },
+    ];
 
-    paths.forEach(path => {
-      path.addEventListener("mousemove", e => {
-        const country = info[path.id];
-        if (country) {
-          infoBox.style.display = "block";
-          infoBox.style.left = (e.pageX + 15) + "px";
-          infoBox.style.top = (e.pageY - 40) + "px";
-          infoBox.innerHTML = 
-            <strong>${country.name}</strong><br>
-            پایتخت: ${country.capital}<br>
-            جمعیت: ${country.population}<br>
-            قاره: ${country.continent}
-          ;
-        }
-      });
-
-      path.addEventListener("mouseleave", () => {
-        infoBox.style.display = "none";
-      });
+    countries.forEach(c => {
+      L.marker([c.lat, c.lon]).addTo(map)
+        .bindPopup(<b>${c.name}</b><br>پایتخت: ${c.capital})
+        .openPopup;
     });
   </script>
 </body>

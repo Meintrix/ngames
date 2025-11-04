@@ -1,117 +1,98 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NGames - گیم سنتر</title>
+  <title>🎮 مرکز بازی </title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     body {
-      background: radial-gradient(circle at center, #0a0a1a, #000);
-      color: #fff;
-      font-family: 'Orbitron', sans-serif;
+      background: radial-gradient(circle at center, #0f172a, #000);
+      color: white;
+      font-family: 'Vazirmatn', sans-serif;
       text-align: center;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
     }
-    h1 {
-      margin-top: 50px;
-      font-size: 3em;
-      color: #00ffff;
-      text-shadow: 0 0 15px #00ffff;
+    .title {
+      font-size: 2.5rem;
+      margin-top: 40px;
+      font-weight: bold;
+      text-shadow: 0 0 15px #00e0ff;
     }
-    button {
-      margin: 10px;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 10px;
-      background: linear-gradient(90deg, #0ff, #08f);
-      color: #000;
-      font-size: 18px;
-      cursor: pointer;
+    .game-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 20px;
+      margin: 20px;
+      transition: 0.3s;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+    }
+    .game-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    .game-btn {
+      display: inline-block;
+      margin-top: 10px;
+      background: linear-gradient(90deg, #00e0ff, #0077ff);
+      padding: 10px 20px;
+      border-radius: 15px;
+      color: white;
+      font-weight: bold;
+      text-decoration: none;
       transition: 0.3s;
     }
-    button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 15px #0ff;
+    .game-btn:hover {
+      background: linear-gradient(90deg, #0077ff, #00e0ff);
+      box-shadow: 0 0 15px #00e0ff;
     }
-    #profileBox {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(255,255,255,0.1);
-      padding: 10px 15px;
-      border-radius: 10px;
+    footer {
+      margin-top: 50px;
+      color: #ccc;
       font-size: 14px;
-      text-align: left;
-    }
-    #loginBox {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    input {
-      padding: 10px;
-      font-size: 18px;
-      border-radius: 10px;
-      border: none;
-      margin-bottom: 10px;
-      text-align: center;
     }
   </style>
 </head>
+
 <body>
-  <div id="loginBox">
-    <h2>نام گیمر خودت رو وارد کن 🎮</h2>
-    <input type="text" id="username" placeholder="مثل: Ghost_Killer" />
-    <button onclick="saveProfile()">شروع بازی</button>
+  <h1 class="title">🎮 مرکز بازی‌های من</h1>
+
+  <div class="flex flex-wrap justify-center mt-10">
+    <div class="game-card w-72">
+      <h2 class="text-xl font-bold">🐍 بازی مار</h2>
+      <p>سعی کن تا می‌تونی رشد کنی!</p>
+      <a href="/snake" class="game-btn">شروع بازی</a>
+    </div>
+
+    <div class="game-card w-72">
+      <h2 class="text-xl font-bold">🎯 حدس عدد</h2>
+      <p>بین ۱ تا ۱۰۰ یه عدد حدس بزن!</p>
+      <a href="/guess" class="game-btn">شروع بازی</a>
+    </div>
+
+    <div class="game-card w-72">
+      <h2 class="text-xl font-bold">✊📄✂️ سنگ، کاغذ، قیچی</h2>
+      <p>میتونی هوش مصنوعی رو شکست بدی؟</p>
+      <a href="/rps" class="game-btn">شروع بازی</a>
+    </div>
+
+    <div class="game-card w-72">
+      <h2 class="text-xl font-bold">🚀 شلیک فضایی</h2>
+      <p>فضاپیما رو کنترل کن و دشمنارو نابود کن!</p>
+      <a href="/space" class="game-btn">شروع بازی</a>
+    </div>
+
+    <div class="game-card w-72">
+      <h2 class="text-xl font-bold">🌍 اطلاعات زمین</h2>
+      <p>روی کشورها برو تا اطلاعاتشون رو ببینی!</p>
+      <a href="/earth_map" class="game-btn">ورود به نقشه</a>
+    </div>
   </div>
 
-  <h1>🎮 NGames Portal 🎮</h1>
-
-  <div id="profileBox">
-    <div><strong>گیمر:</strong> <span id="playerName"></span></div>
-    <div><strong>امتیاز:</strong> <span id="playerScore">0</span></div>
-    <button onclick="resetScore()">ریست</button>
-  </div>
-
-  <div>
-    <button onclick="window.location.href='space.html'">🚀 بازی فضایی</button>
-    <button onclick="window.location.href='snake.html'">🐍 مار</button>
-    <button onclick="window.location.href='earth_map.html'">🌍 اطلاعات زمین</button>
-  </div>
-
-  <script>
-    function saveProfile() {
-      const name = document.getElementById('username').value.trim();
-      if (!name) return alert('لطفاً نام گیمر خود را وارد کن!');
-      localStorage.setItem('playerName', name);
-      localStorage.setItem('playerScore', localStorage.getItem('playerScore') || 0);
-      document.getElementById('loginBox').style.display = 'none';
-      updateProfile();
-    }
-
-    function updateProfile() {
-      const name = localStorage.getItem('playerName');
-      const score = localStorage.getItem('playerScore') || 0;
-      if (name) {
-        document.getElementById('loginBox').style.display = 'none';
-        document.getElementById('playerName').textContent = name;
-        document.getElementById('playerScore').textContent = score;
-      }
-    }
-
-    function resetScore() {
-      if (confirm('آیا مطمئنی می‌خوای امتیازت رو ریست کنی؟')) {
-        localStorage.setItem('playerScore', 0);
-        updateProfile();
-      }
-    }
-
-    updateProfile();
-  </script>
+  <footer>
+    ساخته شده توسط <b>Amirmahdi</b>
+  </footer>
 </body>
 </html>

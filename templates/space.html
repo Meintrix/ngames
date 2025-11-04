@@ -1,66 +1,12 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-    <meta charset="UTF-8">
-    <title>بازی شلیک فضایی 🚀</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <style>
-        body {
-            background: radial-gradient(circle at center, #000020, #000);
-            color: white;
-            text-align: center;
-            font-family: 'Vazir', sans-serif;
-        }
-        #gameContainer {
-            margin-top: 20px;
-            position: relative;
-            display: inline-block;
-        }
-        canvas {
-            border: 2px solid cyan;
-            background: rgba(0, 0, 0, 0.8);
-        }
-        #controls {
-            margin-top: 20px;
-        }
-        button {
-            background: #00ffff;
-            color: black;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin: 5px;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        button:hover {
-            background: #0099ff;
-            color: white;
-        }
-        #scoreBoard {
-            margin-top: 15px;
-            font-size: 18px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>بازی فضایی 🚀</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>🚀 بازی شلیک فضایی 🚀</h1>
-
-    <div id="controls">
-        <button id="startBtn">شروع بازی</button>
-        <button id="stopBtn" disabled>پایان بازی</button>
-        <a href="/" style="text-decoration:none;"><button>🏠 بازگشت به خانه</button></a>
-    </div>
-
-    <div id="scoreBoard">
-        <p>امتیاز: <span id="score">0</span> | رکورد: <span id="highscore">0</span></p>
-    </div>
-
-    <div id="gameContainer">
-        <canvas id="gameCanvas" width="400" height="500"></canvas>
-    </div>
-
-    <script src="{{ url_for('static', filename='space.js') }}"></script>
+  <canvas id="gameCanvas"></canvas>
+  <script src="{{ url_for('static', filename='space.js') }}"></script>
 </body>
 </html>

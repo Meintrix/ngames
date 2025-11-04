@@ -1,110 +1,76 @@
-const canvas = document.getElementById("game");
+const canvas = document.getElementById("snakeCanvas");
 const ctx = canvas.getContext("2d");
-const scoreDisplay = document.getElementById("score");
-const recordDisplay = document.getElementById("record");
-const restartBtn = document.getElementById("restartBtn");
-
 const box = 20;
-let snake, direction, food, score, record, game;
+let snake = [{ x: 10 * box, y: 10 * box }];
+let food = {
+  x: Math.floor(Math.random() * 20) * box,
+  y: Math.floor(Math.random() * 20) * box
+};
+let d;
+let score = 0;
 
-// رکورد از مرورگر (localStorage)
-record = localStorage.getItem("snakeRecord") || 0;
-recordDisplay.textContent = "رکورد: " + record;
+document.addEventListener("keydown", direction);
 
-function initGame() {
-    snake = [{ x: 10 * box, y: 10 * box }];
-    direction = null;
-    food = {
-        x: Math.floor(Math.random() * 20) * box,
-        y: Math.floor(Math.random() * 20) * box,
-    };
-    score = 0;
-    scoreDisplay.textContent = "امتیاز: ۰";
-    restartBtn.style.display = "none";
-
-    if (game) clearInterval(game);
-    game = setInterval(draw, 100);
-}
-
-document.addEventListener("keydown", directionControl);
-
-function directionControl(event) {
-    if (event.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
-    else if (event.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
-    else if (event.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
-    else if (event.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
+function direction(event) {
+  if (event.keyCode == 37 && d != "RIGHT") d = "LEFT";
+  else if (event.keyCode == 38 && d != "DOWN") d = "UP";
+  else if (event.keyCode == 39 && d != "LEFT") d = "RIGHT";
+  else if (event.keyCode == 40 && d != "UP") d = "DOWN";
 }
 
 function draw() {
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, 400, 400);
 
-    // غذا
-    ctx.fillStyle = "red";
-    ctx.fillRect(food.x, food.y, box, box);
+  for (let i = 0; i < snake.length; i++) {
+    ctx.fillStyle = i == 0 ? "#00ffcc" : "white";
+    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+  }
 
-    // مار
-    for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = i === 0 ? "#0f0" : "limegreen";
-        ctx.fillRect(snake[i].x, snake[i].y, box, box);
-    }
+  ctx.fillStyle = "red";
+  ctx.fillRect(food.x, food.y, box, box);
 
-    let headX = snake[0].x;
-    let headY = snake[0].y;
+  let snakeX = snake[0].x;
+  let snakeY = snake[0].y;
 
-    if (direction === "LEFT") headX -= box;
-    if (direction === "UP") headY -= box;
-    if (direction === "RIGHT") headX += box;
-    if (direction === "DOWN") headY += box;
+  if (d == "LEFT") snakeX -= box;
+  if (d == "UP") snakeY -= box;
+  if (d == "RIGHT") snakeX += box;
+  if (d == "DOWN") snakeY += box;
 
-    if (headX === food.x && headY === food.y) {
-        score++;
-        scoreDisplay.textContent = "امتیاز: " + score;
+  if (snakeX == food.x && snakeY == food.y) {
+    score++;
+    localStorage.setItem('playerScore', Number(localStorage.getItem('playerScore') || 0) + 1);
+    food = {
+      x: Math.floor(Math.random() * 20) * box,
+      y: Math.floor(Math.random() * 20) * box
+    };
+  } else {
+    snake.pop();
+  }
 
-        // رکورد جدید؟
-        if (score > record) {
-            record = score;
-            localStorage.setItem("snakeRecord", record);
-            recordDisplay.textContent = "رکورد: " + record;
-        }
+  let newHead = { x: snakeX, y: snakeY };
 
-        food = {
-            x: Math.floor(Math.random() * 20) * box,
-            y: Math.floor(Math.random() * 20) * box,
-        };
-    } else {
-        snake.pop();
-    }
+  if (
+    snakeX < 0 ||
+    snakeY < 0 ||
+    snakeX >= 400 ||
+    snakeY >= 400 ||
+    collision(newHead, snake)
+  ) {
+    clearInterval(game);
+    alert("🐍 باختی! امتیاز: " + score);
+    window.location.href = "/";
+  }
 
-    let newHead = { x: headX, y: headY };
-
-    // باخت
-    if (
-        headX < 0 ||
-        headY < 0 ||
-        headX >= canvas.width ||
-        headY >= canvas.height ||
-        collision(newHead, snake)
-    ) {
-        clearInterval(game);
-        restartBtn.style.display = "block";
-        return;
-    }
-
-    snake.unshift(newHead);
+  snake.unshift(newHead);
 }
 
 function collision(head, array) {
-    for (let i = 0; i < array.length; i++) {
-        if (head.x === array[i].x && head.y === array[i].y) {
-            return true;
-        }
-    }
-    return false;
+  for (let i = 0; i < array.length; i++) {
+    if (head.x == array[i].x && head.y == array[i].y) return true;
+  }
+  return false;
 }
 
-function restartGame() {
-    initGame();
-}
-
-initGame();
+let game = setInterval(draw, 100);
