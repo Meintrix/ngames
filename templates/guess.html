@@ -1,21 +1,74 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <title>حدس عدد</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>🎯 حدس عدد — NGames</title>
+  <style>
+    /* پایه نئونی مشابه بقیه */
+    :root{ --neon:#00ffcc; --neon-2:#00d7ff; --bg:#000010; }
+    body{
+      margin:0; padding:20px;
+      background: radial-gradient(circle at top, #000010, #000);
+      color: #cfffe8; font-family: "Vazirmatn", Tahoma, sans-serif;
+      display:flex; align-items:center; justify-content:center; min-height:100vh;
+    }
+    .wrap{
+      width: 420px; background: rgba(255,255,255,0.02); border-radius:14px;
+      padding:18px; box-shadow: 0 12px 40px rgba(0,200,220,0.04);
+      border: 2px solid rgba(0,200,220,0.06); text-align:center;
+    }
+
+    h1{ margin:0 0 12px; color:var(--neon-2); text-shadow:0 0 12px rgba(0,215,255,0.12); }
+    p.desc{ color:#9fe6dc; margin:8px 0 18px; }
+
+    form { display:flex; gap:10px; justify-content:center; align-items:center; margin-bottom:14px; }
+    input[type=number]{
+      width:140px; padding:10px; border-radius:10px; border:none; outline:none;
+      background: rgba(255,255,255,0.03); color: #bfffe8; font-size:16px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
+    }
+    button{
+      background: linear-gradient(90deg,var(--neon),var(--neon-2));
+      border:none; padding:10px 18px; border-radius:12px; cursor:pointer; color:#001;
+      font-weight:700; transition:all .22s ease; box-shadow:0 8px 30px rgba(0,220,200,0.08);
+    }
+    button:hover{ transform: translateY(-6px); box-shadow:0 0 26px rgba(0,220,200,0.9); }
+
+    .message{
+      margin-top:10px; padding:12px; border-radius:10px;
+      background: rgba(0,255,210,0.04); color:#cffff7; border:1px solid rgba(0,255,210,0.06);
+      box-shadow: 0 6px 20px rgba(0,200,200,0.03);
+    }
+
+    .controls{ margin-top:16px; display:flex; justify-content:center; gap:10px; }
+    .btn-back{ background:#ff66aa; color:white; padding:8px 12px; border-radius:10px; text-decoration:none; }
+
+    @media (max-width:460px){
+      .wrap{ width:92%; padding:14px; }
+      form{ flex-direction:column; gap:12px; }
+    }
+  </style>
 </head>
 <body>
-  <div class="game-wrap">
-    <h2>بازی حدس عدد</h2>
-    <form method="post">
-      <input name="guess" type="number" placeholder="عدد را وارد کن" required>
-      <button class="btn" type="submit">ارسال</button>
+  <div class="wrap">
+    <h1>🎯 بازی حدس عدد</h1>
+    <p class="desc">یک عدد بین ۱ و ۱۰۰ حدس بزن — ما جواب رو نگه می‌داریم و بهت می‌گیم بالا/پایین.</p>
+
+    <form method="post" autocomplete="off">
+      <input type="number" name="guess" min="1" max="100" placeholder="عدد را وارد کن" required />
+      <button type="submit">ارسال</button>
     </form>
+
     {% if message %}
-      <p class="message">{{ message }}</p>
+      <div class="message">{{ message }}</div>
+    {% else %}
+      <div class="message">آماده‌ای؟ عدد رو وارد کن و امتحان کن!</div>
     {% endif %}
-    <a class="btn small" href="{{ url_for('index') }}">بازگشت</a>
+
+    <div class="controls">
+      <a class="btn-back" href="{{ url_for('index') }}">◀ بازگشت به خانه</a>
+    </div>
   </div>
 </body>
 </html>
