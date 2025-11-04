@@ -12,13 +12,14 @@ let gameOver = false;
 let gameRunning = false;
 let bestScore = localStorage.getItem("bestScore") || 0;
 
-// 🎮 دکمه شروع و دوباره
+// 🎮 دکمه‌های کنترل
 const startBtn = document.getElementById("startBtn");
 const restartBtn = document.getElementById("restartBtn");
-const scoreDisplay = document.getElementById("score");
-const bestDisplay = document.getElementById("best");
 
-startBtn.onclick = () => {
+startBtn.onclick = startGame;
+restartBtn.onclick = startGame;
+
+function startGame() {
     gameRunning = true;
     startBtn.style.display = "none";
     restartBtn.style.display = "none";
@@ -27,23 +28,20 @@ startBtn.onclick = () => {
     enemies = [];
     bullets = [];
     loop();
-};
+}
 
-restartBtn.onclick = () => {
-    startBtn.onclick();
-};
-
-// 🌀 کنترل موس برای حرکت سریع
+// 🌀 حرکت موس برای هدایت سریع سفینه
 canvas.addEventListener("mousemove", (e) => {
     if (!gameRunning) return;
     const rect = canvas.getBoundingClientRect();
     player.x = e.clientX - rect.left - player.w / 2;
 });
 
-// شلیک با کلیک
-canvas.addEventListener("click", () => {
-    if (gameRunning)
+// 💥 تیر زدن با دکمه Space
+window.addEventListener("keydown", (e) => {
+    if (e.code === "Space" && gameRunning) {
         bullets.push({ x: player.x + player.w / 2 - 3, y: player.y, w: 6, h: 10, color: "#0ff" });
+    }
 });
 
 function spawnEnemy() {
@@ -102,7 +100,7 @@ function update() {
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // افکت دور زمین بازی
+    // افکت مرز زمین بازی
     ctx.strokeStyle = "rgba(0, 255, 255, 0.6)";
     ctx.lineWidth = 10;
     ctx.strokeRect(0, 0, canvas.width, canvas.height);
@@ -123,7 +121,7 @@ function draw() {
         ctx.fillRect(e.x, e.y, e.w, e.h);
     });
 
-    // امتیاز
+    // امتیاز و رکورد
     ctx.fillStyle = "#fff";
     ctx.font = "20px Arial";
     ctx.fillText("امتیاز: " + score, 20, 30);
