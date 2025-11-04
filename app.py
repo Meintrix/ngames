@@ -1,77 +1,47 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, redirect, url_for, session
 import random
 
 app = Flask(__name__)
-app.secret_key = "secret_key_123"
+app.secret_key = "super_secret_key_987"
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+# -------------------- صفحه ورود --------------------
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        lastname = request.form.get('lastname')
+        if name and lastname:
+            session['user'] = f"{name} {lastname}"
+            session['score'] = 0
+            return redirect(url_for('menu'))
+    return render_template('login.html')
 
+# -------------------- منوی اصلی --------------------
+@app.route('/menu')
+def menu():
+    if 'user' not in session:
+        return redirect(url_for('login'))
+    return render_template('index.html', username=session['user'], score=session.get('score', 0))
+
+# -------------------- بازی شلیک فضایی --------------------
 @app.route('/space')
 def space():
+    if 'user' not in session:
+        return redirect(url_for('login'))
     return render_template('space.html')
 
-@app.route('/snake')
-def snake():
-    return render_template('snake.html')
+@app.route('/update_score', methods=['POST'])
+def update_score():
+    new_score = int(request.form['score'])
+    if new_score > session.get('score', 0):
+        session['score'] = new_score
+    return ('', 204)
 
-@app.route('/earth_map')
-def earth_map():
-    return render_template('earth_map.html')
+# -------------------- خروج --------------------
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
-# --- بازی حدس عدد ---
-@app.route('/guess', methods=['GET', 'POST'])
-def guess():
-    if 'number' not in session:
-        session['number'] = random.randint(1, 100)
-        session['tries'] = 0
-
-    message = ""
-    if request.method == 'POST':
-        try:
-            guess = int(request.form['guess'])
-        except:
-            message = "لطفاً فقط عدد وارد کن 😅"
-            return render_template('guess.html', message=message)
-
-        session['tries'] += 1
-        number = session['number']
-
-        if guess < number:
-            message = "عدد بزرگ‌تره ⬆️"
-        elif guess > number:
-            message = "عدد کوچک‌تره ⬇️"
-        else:
-            message = f"آفرین! 🎉 عدد {number} بود! در {session['tries']} تلاش حدس زدی!"
-            session.pop('number')
-            session.pop('tries')
-
-    return render_template('guess.html', message=message)
-
-# --- بازی سنگ، کاغذ، قیچی ---
-@app.route('/rps', methods=['GET', 'POST'])
-def rps():
-    result = ""
-    user_choice = ""
-    computer_choice = ""
-
-    choices = ["سنگ", "کاغذ", "قیچی"]
-
-    if request.method == 'POST':
-        user_choice = request.form["choice"]
-        computer_choice = random.choice(choices)
-
-        if user_choice == computer_choice:
-            result = "مساوی شد 😐"
-        elif (user_choice == "سنگ" and computer_choice == "قیچی") or \
-             (user_choice == "کاغذ" and computer_choice == "سنگ") or \
-             (user_choice == "قیچی" and computer_choice == "کاغذ"):
-            result = "بردی 😎"
-        else:
-            result = "باختی 😢"
-
-    return render_template('rps.html', result=result, user_choice=user_choice, computer_choice=computer_choice)
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
