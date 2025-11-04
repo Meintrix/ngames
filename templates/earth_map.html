@@ -2,34 +2,23 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <title>نقشه — NGames</title>
+  <title>شلیک فضایی</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 <body>
   <div class="game-wrap">
-    <h2>🌍 اطلاعات زمین</h2>
-    <div id="map" style="height:70vh;"></div>
+    <h2>شلیک فضایی</h2>
+    <div class="canvas-wrap">
+      <canvas id="spaceCanvas" width="600" height="500"></canvas>
+    </div>
+
     <div class="controls">
-      <a class="btn" href="{{ url_for('menu') }}">بازگشت به منو</a>
+      <button id="startBtn" class="btn">شروع بازی</button>
+      <button id="restartBtn" class="btn" style="display:none;">شروع دوباره</button>
+      <a class="btn small" href="{{ url_for('index') }}">بازگشت</a>
     </div>
   </div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    const map = L.map('map').setView([20, 0], 2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18 }).addTo(map);
-
-    const data = [
-      { name: "ایران", capital: "تهران", lat: 35.7, lon: 51.4 },
-      { name: "فرانسه", capital: "پاریس", lat: 48.85, lon: 2.35 },
-      { name: "ژاپن", capital: "توکیو", lat: 35.68, lon: 139.76 },
-      { name: "آمریکا", capital: "واشنگتن", lat: 38.9, lon: -77.03 }
-    ];
-
-    data.forEach(c => {
-      L.marker([c.lat, c.lon]).addTo(map).bindPopup(<b>${c.name}</b><br>پایتخت: ${c.capital});
-    });
-  </script>
+  <script src="{{ url_for('static', filename='space.js') }}"></script>
 </body>
 </html>

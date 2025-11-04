@@ -2,22 +2,20 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <title>شلیک فضایی — NGames</title>
+  <title>شلیک فضایی</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <div class="game-wrap">
-    <h2>🚀 شلیک فضایی</h2>
-    <div class="game-info">امتیاز فعلی: <span id="scoreDisplay">0</span></div>
-
+    <h2>شلیک فضایی</h2>
     <div class="canvas-wrap">
       <canvas id="spaceCanvas" width="600" height="500"></canvas>
     </div>
 
     <div class="controls">
-      <button id="startBtn">شروع بازی</button>
-      <button id="restartBtn" style="display:none;">شروع دوباره</button>
-      <a class="btn" href="{{ url_for('menu') }}">بازگشت به منو</a>
+      <button id="startBtn" class="btn">شروع بازی</button>
+      <button id="restartBtn" class="btn" style="display:none;">شروع دوباره</button>
+      <a class="btn small" href="{{ url_for('index') }}">بازگشت</a>
     </div>
   </div>
 

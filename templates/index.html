@@ -2,25 +2,47 @@
 <html lang="fa" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <title>منوی اصلی — NGames</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>مرکز بازی‌ها</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <header class="menu-header">
-    <h1>🎮 NGames Portal</h1>
-    <div class="user-box">
-      <strong>{{ username }}</strong>
-      <div>🏆 رکورد: <span id="serverScore">{{ score }}</span></div>
-      <a href="{{ url_for('logout') }}" class="btn small">خروج</a>
-    </div>
-  </header>
+  <div class="page">
+    <h1 class="title">مرکز بازی‌های من</h1>
 
-  <main class="menu-grid">
-    <a class="card" href="{{ url_for('snake') }}">🐍 بازی مار</a>
-    <a class="card" href="{{ url_for('guess') }}">🎯 حدس عدد</a>
-    <a class="card" href="{{ url_for('rps') }}">✊ سنگ، کاغذ، قیچی</a>
-    <a class="card" href="{{ url_for('space') }}">🚀 شلیک فضایی</a>
-    <a class="card" href="{{ url_for('earth_map') }}">🌍 اطلاعات زمین</a>
-  </main>
+    <div class="cards">
+      <div class="card">
+        <h3>🎯 حدس عدد</h3>
+        <p>بین ۱ تا ۱۰۰ حدس بزن</p>
+        <a class="btn" href="{{ url_for('guess') }}">شروع بازی</a>
+      </div>
+
+      <div class="card">
+        <h3>✊ سنگ، کاغذ، قیچی</h3>
+        <p>هوش مصنوعی رو شکست بده</p>
+        <a class="btn" href="{{ url_for('rps') }}">شروع بازی</a>
+      </div>
+
+      <div class="card">
+        <h3>🚀 شلیک فضایی</h3>
+        <p>سفینه رو کنترل کن و دشمنارو بزن</p>
+        <a class="btn" href="{{ url_for('space') }}">شروع بازی</a>
+      </div>
+
+      <div class="card">
+        <h3>🐍 بازی مار</h3>
+        <p>تا می‌تونی رشد کن</p>
+        <a class="btn" href="{{ url_for('snake') }}">شروع بازی</a>
+      </div>
+
+      <div class="card">
+        <h3>🌍 اطلاعات زمین</h3>
+        <p>نقشه و پایتخت‌ها</p>
+        <a class="btn" href="{{ url_for('earth') }}">ورود به نقشه</a>
+      </div>
+    </div>
+
+    <footer class="foot">طراحی شده توسط@Amir81838 </footer>
+  </div>
 </body>
 </html>
