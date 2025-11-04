@@ -76,6 +76,7 @@
 </head>
 <body>
   <h1>🚀 بازی شلیک فضایی نئونی</h1>
+
   <div id="gameContainer">
     <canvas id="space" width="400" height="400"></canvas>
   </div>
@@ -93,13 +94,16 @@
   <script>
     const canvas = document.getElementById("space");
     const ctx = canvas.getContext("2d");
+
     const player = { x: 180, y: 350, w: 40, h: 20, speed: 6 };
     const bullets = [];
     const enemies = [];
+
     let score = 0;
     let highScore = localStorage.getItem("spaceHighScore") || 0;
     document.getElementById("highScore").innerText = highScore;
-    let gameInterval;
+
+    let gameInterval = null;
     let keys = {};
 
     document.addEventListener("keydown", (e) => (keys[e.key] = true));
@@ -128,6 +132,7 @@
         ctx.fillRect(en.x, en.y, 30, 20);
         if (en.y > canvas.height) enemies.splice(i, 1);
 
+        // برخورد با تیر
         bullets.forEach((b, j) => {
           if (
             b.x < en.x + 30 &&
@@ -138,15 +143,11 @@
             enemies.splice(i, 1);
             bullets.splice(j, 1);
             score++;
-            document.getElementById("score").innerText = score;
-            if (score > highScore) {
-              highScore = score;
-              localStorage.setItem("spaceHighScore", highScore);
-              document.getElementById("highScore").innerText = highScore;
-            }
+            updateScore();
           }
         });
 
+        // برخورد با بازیکن
         if (
           en.x < player.x + player.w &&
           en.x + 30 > player.x &&
@@ -157,3 +158,65 @@
         }
       });
     }
+
+    function movePlayer() {
+      if (keys["ArrowLeft"] && player.x > 0) player.x -= player.speed;
+      if (keys["ArrowRight"] && player.x + player.w < canvas.width)
+        player.x += player.speed;
+      if (keys[" "] || keys["Spacebar"]) {
+        shoot();
+        keys[" "] = false;
+      }
+    }
+    function shoot() {
+      bullets.push({ x: player.x + player.w / 2 - 2, y: player.y });
+    }
+
+    function spawnEnemy() {
+      if (Math.random() < 0.03) {
+        enemies.push({ x: Math.random() * 370, y: 0 });
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      movePlayer();
+      drawPlayer();
+      drawBullets();
+      drawEnemies();
+      spawnEnemy();
+    }
+
+    function updateScore() {
+      document.getElementById("score").innerText = score;
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem("spaceHighScore", highScore);
+        document.getElementById("highScore").innerText = highScore;
+      }
+    }
+
+    function startGame() {
+      if (gameInterval) clearInterval(gameInterval);
+      player.x = 180;
+      bullets.length = 0;
+      enemies.length = 0;
+      score = 0;
+      updateScore();
+      gameInterval = setInterval(draw, 40);
+    }
+
+    function endGame() {
+      clearInterval(gameInterval);
+      alert("💥 باختی! امتیازت: " + score);
+    }
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      startGame();
+      canvas.focus();
+    });
+
+    document.getElementById("restartBtn").addEventListener("click", startGame);
+  </script>
+</body>
+</html>
