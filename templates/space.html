@@ -1,24 +1,159 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
-  <meta charset="utf-8">
-  <title>شلیک فضایی</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚀 شلیک فضایی نئونی</title>
+  <style>
+    body {
+      background: radial-gradient(circle at bottom, #000010 0%, #000 100%);
+      color: #00ffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: "Vazirmatn", sans-serif;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      text-shadow: 0 0 20px #00ffff;
+    }
+
+    #gameContainer {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      border: 3px solid #00ffff;
+      box-shadow: 0 0 25px #00ffff;
+      background-color: #050505;
+      overflow: hidden;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+    }
+
+    button {
+      background-color: #00ffcc;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 0 15px #00ffff;
+      transition: all 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px #00ffff;
+    }
+
+    .scoreboard {
+      margin-top: 15px;
+      font-size: 18px;
+    }
+
+    .back {
+      margin-top: 20px;
+      background-color: #ff00aa;
+      color: white;
+      box-shadow: 0 0 15px #ff00aa;
+    }
+  </style>
 </head>
 <body>
-  <div class="game-wrap">
-    <h2>شلیک فضایی</h2>
-    <div class="canvas-wrap">
-      <canvas id="spaceCanvas" width="600" height="500"></canvas>
-    </div>
-
-    <div class="controls">
-      <button id="startBtn" class="btn">شروع بازی</button>
-      <button id="restartBtn" class="btn" style="display:none;">شروع دوباره</button>
-      <a class="btn small" href="{{ url_for('index') }}">بازگشت</a>
-    </div>
+  <h1>🚀 بازی شلیک فضایی نئونی</h1>
+  <div id="gameContainer">
+    <canvas id="space" width="400" height="400"></canvas>
   </div>
 
-  <script src="{{ url_for('static', filename='space.js') }}"></script>
-</body>
-</html>
+  <div class="scoreboard">
+    امتیاز: <span id="score">0</span> | رکورد: <span id="highScore">0</span>
+  </div>
+
+  <div class="controls">
+    <button id="startBtn">شروع بازی</button>
+    <button id="restartBtn">شروع دوباره</button>
+    <button class="back" onclick="window.location.href='/'">بازگشت به خانه</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("space");
+    const ctx = canvas.getContext("2d");
+    const player = { x: 180, y: 350, w: 40, h: 20, speed: 6 };
+    const bullets = [];
+    const enemies = [];
+    let score = 0;
+    let highScore = localStorage.getItem("spaceHighScore") || 0;
+    document.getElementById("highScore").innerText = highScore;
+    let gameInterval;
+    let keys = {};
+
+    document.addEventListener("keydown", (e) => (keys[e.key] = true));
+    document.addEventListener("keyup", (e) => (keys[e.key] = false));
+
+    function drawPlayer() {
+      ctx.fillStyle = "#00ffff";
+      ctx.fillRect(player.x, player.y, player.w, player.h);
+      ctx.shadowColor = "#00ffff";
+      ctx.shadowBlur = 10;
+    }
+
+    function drawBullets() {
+      ctx.fillStyle = "#00ff00";
+      bullets.forEach((b, i) => {
+        b.y -= 8;
+        ctx.fillRect(b.x, b.y, 4, 10);
+        if (b.y < 0) bullets.splice(i, 1);
+      });
+    }
+
+    function drawEnemies() {
+      ctx.fillStyle = "#ff0066";
+      enemies.forEach((en, i) => {
+        en.y += 2;
+        ctx.fillRect(en.x, en.y, 30, 20);
+        if (en.y > canvas.height) enemies.splice(i, 1);
+
+        bullets.forEach((b, j) => {
+          if (
+            b.x < en.x + 30 &&
+            b.x + 4 > en.x &&
+            b.y < en.y + 20 &&
+            b.y + 10 > en.y
+          ) {
+            enemies.splice(i, 1);
+            bullets.splice(j, 1);
+            score++;
+            document.getElementById("score").innerText = score;
+            if (score > highScore) {
+              highScore = score;
+              localStorage.setItem("spaceHighScore", highScore);
+              document.getElementById("highScore").innerText = highScore;
+            }
+          }
+        });
+
+        if (
+          en.x < player.x + player.w &&
+          en.x + 30 > player.x &&
+          en.y < player.y + player.h &&
+          en.y + 20 > player.y
+        ) {
+          endGame();
+        }
+      });
+    }
