@@ -1,48 +1,48 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>مرکز بازی‌ها</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مرکز بازی‌های من 🎮</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <div class="page">
-    <h1 class="title">مرکز بازی‌های من</h1>
+    <h1>مرکز بازی‌های وب من 🎯</h1>
 
-    <div class="cards">
-      <div class="card">
-        <h3>🎯 حدس عدد</h3>
-        <p>بین ۱ تا ۱۰۰ حدس بزن</p>
-        <a class="btn" href="{{ url_for('guess') }}">شروع بازی</a>
-      </div>
+    <div class="game-container">
+        <div class="game-card">
+            <h2>🎲 حدس عدد</h2>
+            <p>بین ۱ تا ۱۰۰ عدد رو حدس بزن!</p>
+            <button onclick="window.location.href='/guess'">شروع بازی</button>
+        </div>
 
-      <div class="card">
-        <h3>✊ سنگ، کاغذ، قیچی</h3>
-        <p>هوش مصنوعی رو شکست بده</p>
-        <a class="btn" href="{{ url_for('rps') }}">شروع بازی</a>
-      </div>
+        <div class="game-card">
+            <h2>✂️ سنگ کاغذ قیچی</h2>
+            <p>ببین می‌تونی کامپیوتر رو شکست بدی؟</p>
+            <button onclick="window.location.href='/rps'">شروع بازی</button>
+        </div>
 
-      <div class="card">
-        <h3>🚀 شلیک فضایی</h3>
-        <p>سفینه رو کنترل کن و دشمنارو بزن</p>
-        <a class="btn" href="{{ url_for('space') }}">شروع بازی</a>
-      </div>
+        <div class="game-card">
+            <h2>🐍 مار</h2>
+            <p>سعی کن مار رو به دیوار نزنی!</p>
+            <button onclick="window.location.href='/snake'">شروع بازی</button>
+        </div>
 
-      <div class="card">
-        <h3>🐍 بازی مار</h3>
-        <p>تا می‌تونی رشد کن</p>
-        <a class="btn" href="{{ url_for('snake') }}">شروع بازی</a>
-      </div>
+        <div class="game-card">
+            <h2>🚀 شلیک فضایی</h2>
+            <p>کشتی‌ت رو کنترل کن و دشمنارو نابود کن!</p>
+            <button onclick="window.location.href='/space'">شروع بازی</button>
+        </div>
 
-      <div class="card">
-        <h3>🌍 اطلاعات زمین</h3>
-        <p>نقشه و پایتخت‌ها</p>
-        <a class="btn" href="{{ url_for('earth') }}">ورود به نقشه</a>
-      </div>
+        <div class="game-card">
+            <h2>🌍 اطلاعات زمین</h2>
+            <p>روی کشورها برو تا پایتخت‌شون رو ببینی!</p>
+            <button onclick="window.location.href='/earth'">مشاهده</button>
+        </div>
     </div>
 
-    <footer class="foot">طراحی شده توسط@Amir81838 </footer>
-  </div>
+    <footer>
+        نسخه سایت @Amir1838  
+    </footer>
 </body>
 </html>
