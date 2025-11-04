@@ -1,21 +1,186 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
-  <meta charset="utf-8">
-  <title>مار</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بازی مار 🐍</title>
+    <style>
+        body {
+            background: #000;
+            color: #0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: "Vazirmatn", sans-serif;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        #gameContainer {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            border: 3px solid #00ffff;
+            box-shadow: 0 0 25px #00ffff;
+            background-color: #111;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            background-color: #00ffcc;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            color: #000;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 15px #00ffff;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px #00ffff;
+        }
+
+        .scoreboard {
+            margin-top: 15px;
+            font-size: 18px;
+        }
+
+        .back {
+            margin-top: 20px;
+            background-color: #ff00aa;
+            color: white;
+            box-shadow: 0 0 15px #ff00aa;
+        }
+    </style>
 </head>
 <body>
-  <div class="game-wrap">
-    <h2>بازی مار</h2>
-    <div class="canvas-wrap small">
-      <canvas id="snakeCanvas" width="400" height="400"></canvas>
+    <h1>🐍 بازی مار نئونی</h1>
+    <div id="gameContainer">
+        <canvas id="game" width="400" height="400"></canvas>
     </div>
-    <div class="controls">
-      <a class="btn small" href="{{ url_for('index') }}">بازگشت</a>
-    </div>
-  </div>
 
-  <script src="{{ url_for('static', filename='snake.js') }}"></script>
+    <div class="scoreboard">
+        امتیاز: <span id="score">0</span> | رکورد: <span id="highScore">0</span>
+    </div>
+
+    <div class="controls">
+        <button id="startBtn">شروع بازی</button>
+        <button id="restartBtn">شروع دوباره</button>
+        <button class="back" onclick="window.location.href='/'">بازگشت به خانه</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("game");
+        const ctx = canvas.getContext("2d");
+        const box = 20;
+        let snake = [{ x: 200, y: 200 }];
+        let direction = null;
+        let food = randomFood();
+        let score = 0;
+        let highScore = localStorage.getItem("snakeHighScore") || 0;
+        document.getElementById("highScore").innerText = highScore;
+        let game;
+
+        function randomFood() {
+            return {
+                x: Math.floor(Math.random() * (canvas.width / box)) * box,
+                y: Math.floor(Math.random() * (canvas.height / box)) * box
+            };
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
+            if (e.key === "ArrowDown" && direction !== "UP") direction = "DOWN";
+            if (e.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
+            if (e.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";
+        });
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Food
+            ctx.fillStyle = "#ff0066";
+            ctx.fillRect(food.x, food.y, box, box);
+
+            // Snake
+            for (let i = 0; i < snake.length; i++) {
+                ctx.fillStyle = i === 0 ? "#00ffff" : "#00ccaa";
+                ctx.fillRect(snake[i].x, snake[i].y, box, box);
+            }
+
+            let headX = snake[0].x;
+            let headY = snake[0].y;
+
+            if (direction === "UP") headY -= box;
+            if (direction === "DOWN") headY += box;
+            if (direction === "LEFT") headX -= box;
+            if (direction === "RIGHT") headX += box;
+
+            const newHead = { x: headX, y: headY };
+            // برخورد با دیوار
+            if (headX < 0 || headY < 0 || headX >= canvas.width || headY >= canvas.height) {
+                endGame();
+                return;
+            }
+
+            // برخورد با خود مار
+            for (let i = 1; i < snake.length; i++) {
+                if (snake[i].x === headX && snake[i].y === headY) {
+                    endGame();
+                    return;
+                }
+            }
+
+            snake.unshift(newHead);
+
+            if (headX === food.x && headY === food.y) {
+                score++;
+                food = randomFood();
+                document.getElementById("score").innerText = score;
+                if (score > highScore) {
+                    highScore = score;
+                    localStorage.setItem("snakeHighScore", highScore);
+                    document.getElementById("highScore").innerText = highScore;
+                }
+            } else {
+                snake.pop();
+            }
+        }
+
+        function startGame() {
+            if (game) clearInterval(game);
+            score = 0;
+            snake = [{ x: 200, y: 200 }];
+            direction = null;
+            document.getElementById("score").innerText = 0;
+            game = setInterval(draw, 100);
+        }
+
+        function endGame() {
+            clearInterval(game);
+            alert("😢 باختی! امتیازت: " + score);
+        }
+
+        document.getElementById("startBtn").addEventListener("click", startGame);
+        document.getElementById("restartBtn").addEventListener("click", startGame);
+    </script>
 </body>
 </html>
